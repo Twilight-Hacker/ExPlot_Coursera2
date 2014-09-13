@@ -1,0 +1,12 @@
+library(ggplot2)
+fulldata<-readRDS("summarySCC_PM25.rds")
+SCC <- readRDS("Source_Classification_Code.rds")
+data<-fulldata[grep("24510",fulldata[,1]),]
+byyear.type<-aggregate(data[,4],list(data$year,data$type), FUN=sum)
+q<-qplot(byyear.type[,1], byyear.type[,3], colour=byyear.type[,2],main="Emissions in Baltimore City, Meryland, by Type and Year",xlab="Year",ylab="Emissions in tons")
+q<- q + geom_line()
+q<- q + scale_x_continuous(breaks=c(1999, 2002, 2005, 2008))
+q<- q + labs(colour = "Type")
+png("plot3.png")
+print(q)
+dev.off()
